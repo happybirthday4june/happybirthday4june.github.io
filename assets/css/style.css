@@ -1,9 +1,16 @@
+/* Reset e estilos básicos */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
     font-family: 'Roboto', sans-serif;
-    background: #fff5f5;
-    margin: 0;
+    background-color: #fff5f5;
+    color: #333;
+    line-height: 1.6;
     padding: 20px;
-    text-align: center;
 }
 
 .container {
@@ -25,23 +32,35 @@ body {
 }
 
 /* Piano */
+#piano-container {
+    margin: 30px auto;
+    padding: 20px;
+    background: #f8f8f8;
+    border-radius: 10px;
+}
+
 #piano {
     display: flex;
     position: relative;
     height: 200px;
-    margin: 30px auto;
+    margin: 0 auto;
     justify-content: center;
 }
 
-.key {
+.piano-key {
     position: relative;
     cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    padding-bottom: 10px;
+    font-weight: bold;
 }
 
 .white-key {
     width: 50px;
     height: 200px;
-    background: white;
+    background-color: white;
     border: 1px solid #ddd;
     border-radius: 0 0 5px 5px;
     z-index: 1;
@@ -50,62 +69,78 @@ body {
 .black-key {
     width: 30px;
     height: 120px;
-    background: #333;
+    background-color: #222;
+    color: white;
     position: absolute;
     top: 0;
     z-index: 2;
     border-radius: 0 0 3px 3px;
-    color: white;
+}
+
+/* Estilos interativos */
+.key-active {
+    transform: translateY(3px);
+    box-shadow: inset 0 3px 5px rgba(0,0,0,0.2);
+}
+
+.white-key.key-active {
+    background-color: #f0f0f0;
+}
+
+.black-key.key-active {
+    background-color: #444;
 }
 
 /* Botão */
-#playBtn {
-    background: #ff6b6b;
+#play-button {
+    background: linear-gradient(45deg, #e91e63, #ff5722);
     color: white;
     border: none;
-    padding: 12px 25px;
-    font-size: 18px;
+    padding: 12px 30px;
+    font-size: 1.1em;
     border-radius: 50px;
     cursor: pointer;
     margin: 20px 0;
     transition: all 0.3s;
 }
 
-#playBtn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(255,107,107,0.4);
+#play-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(233, 30, 99, 0.4);
 }
 
 /* Mensagem */
-#message {
+#birthday-message {
     font-family: 'Dancing Script', cursive;
     font-size: 3em;
-    color: #ff6b6b;
+    color: #e91e63;
     margin: 20px 0;
     opacity: 0;
+    transition: opacity 0.5s;
 }
 
 /* Carta */
 .envelope {
-    width: 300px;
-    height: 200px;
+    width: 280px;
+    height: 180px;
     margin: 40px auto;
     position: relative;
     cursor: pointer;
 }
 
-.front {
+.envelope-front {
     position: absolute;
     width: 100%;
     height: 100%;
-    background: #ff6b6b;
+    background: #e91e63;
     border-radius: 8px;
     z-index: 2;
     display: flex;
     justify-content: center;
     align-items: center;
     color: white;
-    font-size: 20px;
+    font-size: 1.3em;
+    transition: all 0.4s;
 }
 
 .letter {
@@ -113,11 +148,16 @@ body {
     width: 95%;
     height: 95%;
     background: white;
-    padding: 20px;
+    padding: 15px;
     border-radius: 5px;
     z-index: 1;
     opacity: 0;
-    transition: all 0.5s;
+    transition: all 0.4s;
+}
+
+.letter-content {
+    height: 100%;
+    overflow-y: auto;
 }
 
 /* Animações */
@@ -126,6 +166,23 @@ body {
     to { opacity: 1; transform: scale(1); }
 }
 
-.active {
-    background: #f0f0f0 !important;
+/* Responsivo */
+@media (max-width: 600px) {
+    #piano {
+        height: 150px;
+    }
+    
+    .white-key {
+        width: 40px;
+        height: 150px;
+    }
+    
+    .black-key {
+        width: 25px;
+        height: 90px;
+    }
+    
+    #birthday-message {
+        font-size: 2em;
+    }
 }

@@ -5,34 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Feliz Aniversário, Dasha!</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
     <div class="container">
-        <!-- Partitura reduzida -->
+        <!-- Partitura -->
         <div class="sheet-music">
-            <img src="partitura.jpg" alt="Partitura de Happy Birthday">
+            <img src="assets/images/partitura.jpg" alt="Partitura de Happy Birthday">
         </div>
         
-        <!-- Piano visível -->
-        <div id="piano">
-            <!-- Teclas serão adicionadas pelo JavaScript -->
+        <!-- Piano -->
+        <div id="piano-container">
+            <div id="piano"></div>
         </div>
         
-        <button id="playBtn">Tocar Música</button>
-        <div id="message">Feliz Aniversário, Dasha!</div>
+        <button id="play-button">Tocar Música</button>
+        <div id="birthday-message">Feliz Aniversário, Dasha!</div>
         
         <!-- Carta -->
         <div class="envelope" id="envelope">
-            <div class="front"></div>
+            <div class="envelope-front">Clique para abrir</div>
             <div class="letter">
-                <p>Querida Dasha,</p>
-                <!-- Sua mensagem aqui -->
+                <div class="letter-content">
+                    <h2>Querida Dasha,</h2>
+                    <p>Mensagem personalizada aqui...</p>
+                </div>
             </div>
         </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
-    <script src="script.js"></script>
+    <script src="assets/js/piano.js"></script>
+    <script src="assets/js/script.js"></script>
 </body>
 </html>

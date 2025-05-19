@@ -1,69 +1,34 @@
 document.addEventListener('DOMContentLoaded', async () => {
-    await Tone.start();
+    // Inicializa o piano
+    const synth = await createPiano();
     
-    // Cria o piano
-    const synth = new Tone.PolySynth(Tone.Synth).toDestination();
-    synth.volume.value = -8;
-    
-    // Cria as teclas visuais
-    const piano = document.getElementById('piano');
-    const whiteKeys = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
-    const blackKeys = ['C#', 'D#', 'F#', 'G#', 'A#'];
-    
-    // Teclas brancas
-    whiteKeys.forEach((key, i) => {
-        const keyEl = document.createElement('div');
-        keyEl.className = 'key white-key';
-        keyEl.textContent = key;
-        keyEl.dataset.note = `${key}4`;
-        piano.appendChild(keyEl);
-    });
-    
-    // Teclas pretas
-    blackKeys.forEach((key, i) => {
-        const keyEl = document.createElement('div');
-        keyEl.className = 'key black-key';
-        keyEl.textContent = key;
-        keyEl.dataset.note = `${key}4`;
-        keyEl.style.left = `${(i < 2 ? i * 50 + 35 : i * 50 + 85)}px`;
-        piano.appendChild(keyEl);
-    });
-    
-    // Tocar nota ao clicar
-    piano.addEventListener('mousedown', e => {
-        if (e.target.classList.contains('key')) {
-            const note = e.target.dataset.note;
-            playNote(note, e.target);
+    // Configura interação com o piano
+    document.getElementById('piano').addEventListener('mousedown', (e) => {
+        if (e.target.classList.contains('piano-key')) {
+            playNote(synth, e.target.dataset.note, e.target);
         }
     });
     
     // Botão para tocar automaticamente
-    document.getElementById('playBtn').addEventListener('click', () => {
+    document.getElementById('play-button').addEventListener('click', () => {
         playHappyBirthday(synth);
     });
     
-    // Carta
+    // Configura carta
     document.getElementById('envelope').addEventListener('click', function() {
-        this.querySelector('.front').style.transform = 'translateY(-100%) rotateX(180deg)';
+        this.querySelector('.envelope-front').style.transform = 'translateY(-50%) rotateX(180deg)';
+        this.querySelector('.envelope-front').style.opacity = '0';
         this.querySelector('.letter').style.opacity = '1';
+        this.querySelector('.letter').style.transform = 'translateY(-50%)';
     });
 });
 
-function playNote(note, element) {
-    const synth = new Tone.Synth().toDestination();
-    synth.triggerAttackRelease(note, "8n");
+// Toca Happy Birthday
+async function playHappyBirthday(synth) {
+    const message = document.getElementById('birthday-message');
+    message.style.opacity = '1';
     
-    element.classList.add('active');
-    setTimeout(() => {
-        element.classList.remove('active');
-    }, 200);
-}
-
-function playHappyBirthday(synth) {
-    const message = document.getElementById('message');
-    message.style.animation = 'fadeIn 1s forwards';
-    
-    // Sequência de Happy Birthday
+    // Sequência de notas
     const notes = [
         { time: 0, note: 'G4', duration: 0.3 },
         { time: 0.5, note: 'G4', duration: 0.3 },
@@ -92,16 +57,17 @@ function playHappyBirthday(synth) {
         { time: 14.7, note: 'C5', duration: 1.2 }
     ];
     
+    // Toca as notas
     const now = Tone.now();
     notes.forEach(({ time, note, duration }) => {
         synth.triggerAttackRelease(note, duration, now + time);
         
-        // Destacar tecla
+        // Destaca a tecla
         setTimeout(() => {
             const key = document.querySelector(`[data-note="${note}"]`);
             if (key) {
-                key.classList.add('active');
-                setTimeout(() => key.classList.remove('active'), 200);
+                key.classList.add('key-active');
+                setTimeout(() => key.classList.remove('key-active'), 200);
             }
         }, time * 1000);
     });
@@ -111,7 +77,13 @@ function playHappyBirthday(synth) {
         confetti({
             particleCount: 150,
             spread: 70,
-            origin: { y: 0.6 }
+            origin: { y: 0.6 },
+            colors: ['#e91e63', '#ffeb3b', '#4caf50', '#2196f3']
         });
     }, 2000);
+    
+    // Esconde a mensagem após 5 segundos
+    setTimeout(() => {
+        message.style.opacity = '0';
+    }, 5000);
 }
