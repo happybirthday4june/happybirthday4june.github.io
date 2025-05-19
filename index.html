@@ -10,11 +10,16 @@
 <body>
     <div class="container">
         <div class="piano-section">
-            <div id="piano"></div>
+            <!-- Partitura reduzida acima do piano -->
             <div class="sheet-music-container">
                 <img src="assets/images/image.png" alt="Partitura de Happy Birthday" id="sheetMusic">
                 <div class="sheet-music-caption">© Partitura de Happy Birthday - Tomlar Novarmento</div>
             </div>
+            
+            <!-- Piano visível permanentemente -->
+            <div id="piano"></div>
+            
+            <!-- Controles -->
             <button id="startButton" class="start-button">Iniciar Surpresa</button>
             <div id="birthdayMessage">Feliz Aniversário, Dasha!</div>
         </div>
@@ -23,21 +28,18 @@
             <div class="letter-envelope" id="letterEnvelope">
                 <div class="envelope-front"></div>
                 <div class="letter" id="letter">
-                    <div class="letter-content" id="letterContent">
-                        <!-- Conteúdo será preenchido via JS -->
-                    </div>
+                    <div class="letter-content" id="letterContent"></div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Bibliotecas externas -->
-    <script src="https://cdn.jsdelivr.net/npm/abcjs@6.0.0/dist/abcjs-basic.min.js"></script>
+    <!-- Bibliotecas -->
     <script src="https://cdn.jsdelivr.net/npm/@tonejs/piano@0.1.2"></script>
     <script src="https://cdn.jsdelivr.net/npm/tone@14.7.77/build/Tone.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
     
-    <!-- Nosso script principal -->
+    <!-- Script principal -->
     <script src="scripts/main.js"></script>
 </body>
 </html>
