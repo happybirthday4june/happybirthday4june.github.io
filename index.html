@@ -4,14 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Feliz Aniversário, Dasha!</title>
-    <!-- Bibliotecas atualizadas -->
     <script src="https://cdn.jsdelivr.net/npm/opensheetmusicdisplay@1.5.0/build/opensheetmusicdisplay.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/soundfont-player@0.12.6/dist/soundfont-player.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/standardized-audio-context@26.2.0/build/es2015/standardized-audio-context.min.js"></script>
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
             margin: 0;
             padding: 0;
             display: flex;
@@ -19,223 +17,90 @@
             align-items: center;
             min-height: 100vh;
             color: #333;
-        }
-
-        header {
             text-align: center;
+        }
+        
+        header {
             padding: 30px;
             width: 100%;
-            background-color: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(5px);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            background-color: rgba(255,255,255,0.2);
         }
-
+        
         h1 {
-            color: #fff;
+            color: white;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-            margin: 0;
-            font-size: 2.5em;
         }
-
-        .container {
-            width: 90%;
-            max-width: 900px;
-            margin: 30px auto;
-            flex: 1;
-        }
-
+        
         #partitura-container {
-            width: 100%;
-            height: 300px;
-            overflow: auto;
+            width: 90%;
+            max-width: 600px;
+            height: 250px;
+            margin: 20px auto;
             border: 1px solid #ddd;
             background-color: white;
-            margin: 20px 0;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
             border-radius: 10px;
+            overflow: auto;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
-
-        .btn-iniciar {
-            padding: 15px 30px;
+        
+        button {
+            padding: 12px 24px;
             background-color: #ff6b6b;
             color: white;
             border: none;
             border-radius: 50px;
-            font-size: 1.2em;
+            font-size: 18px;
             cursor: pointer;
             margin: 20px 0;
             transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            font-weight: bold;
-            letter-spacing: 1px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
-
-        .btn-iniciar:hover {
+        
+        button:hover {
             background-color: #ff5252;
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
         }
-
-        .btn-iniciar:disabled {
+        
+        button:disabled {
             background-color: #ccc;
             cursor: not-allowed;
-            transform: none;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
-
+        
+        #loading {
+            margin: 20px 0;
+            color: white;
+        }
+        
+        #error-message {
+            color: #ff3333;
+            background-color: rgba(255,255,255,0.8);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            display: none;
+        }
+        
         .mensagem-aniversario {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 3.5em;
+            font-size: 3em;
             color: #ff6b6b;
-            text-shadow: 3px 3px 6px rgba(0,0,0,0.2);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
             opacity: 0;
             z-index: 100;
             animation: aparecer 4s ease-in-out;
             font-weight: bold;
-            text-align: center;
-            background-color: rgba(255, 255, 255, 0.8);
-            padding: 20px 40px;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
-
+        
         @keyframes aparecer {
             0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
             20% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
             40% { transform: translate(-50%, -50%) scale(1); }
             80% { opacity: 1; }
             100% { opacity: 0; }
-        }
-
-        .confete {
-            position: fixed;
-            width: 12px;
-            height: 12px;
-            background-color: #f00;
-            opacity: 0;
-            z-index: 99;
-            animation: confeteCair 3s linear forwards;
-        }
-
-        @keyframes confeteCair {
-            0% { opacity: 1; transform: translateY(-10px) rotate(0deg); }
-            100% { opacity: 1; transform: translateY(100vh) rotate(360deg); }
-        }
-
-        .carta-container {
-            margin: 50px 0;
-            width: 80%;
-            max-width: 600px;
-            perspective: 1000px;
-        }
-
-        .carta {
-            position: relative;
-            width: 100%;
-            height: 350px;
-            transform-style: preserve-3d;
-            transition: transform 1s;
-            cursor: pointer;
-        }
-
-        .carta.aberta {
-            transform: rotateY(180deg);
-        }
-
-        .frente, .verso {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            backface-visibility: hidden;
-            border-radius: 15px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 30px;
-            box-sizing: border-box;
-        }
-
-        .frente {
-            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
-            color: white;
-            font-size: 1.8em;
-            text-align: center;
-        }
-
-        .verso {
-            background-color: white;
-            transform: rotateY(180deg);
-            flex-direction: column;
-            text-align: center;
-            overflow-y: auto;
-        }
-
-        .verso h2 {
-            color: #ff6b6b;
-            margin-bottom: 20px;
-            font-size: 2em;
-        }
-
-        .verso p {
-            line-height: 1.8;
-            margin-bottom: 15px;
-            font-size: 1.1em;
-        }
-
-        .loading {
-            display: none;
-            margin: 30px 0;
-            text-align: center;
-            color: white;
-            font-size: 1.2em;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 20px;
-            background-color: rgba(255, 255, 255, 0.3);
-            border-radius: 10px;
-            margin-top: 20px;
-            overflow: hidden;
-        }
-
-        .progress {
-            height: 100%;
-            background: linear-gradient(90deg, #ff9a9e, #fad0c4);
-            width: 0%;
-            transition: width 0.5s;
-            border-radius: 10px;
-        }
-
-        footer {
-            margin-top: 50px;
-            padding: 20px;
-            text-align: center;
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 1em;
-            width: 100%;
-        }
-
-        /* Responsividade */
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 1.8em;
-            }
-            #partitura-container {
-                height: 200px;
-            }
-            .mensagem-aniversario {
-                font-size: 2em;
-                padding: 15px 30px;
-            }
-            .carta {
-                height: 300px;
-            }
         }
     </style>
 </head>
@@ -244,138 +109,29 @@
         <h1>Feliz Aniversário, Dasha!</h1>
         <p>Uma surpresa musical para a melhor professora de piano</p>
     </header>
-
-    <div class="container">
-        <div id="partitura-container"></div>
-
-        <div class="loading" id="loading">
-            <p>Preparando a surpresa musical...</p>
-            <div class="progress-bar">
-                <div class="progress" id="progress"></div>
-            </div>
-        </div>
-
-        <button class="btn-iniciar" id="btnIniciar" disabled>Carregando Piano...</button>
-
-        <div class="carta-container">
-            <div class="carta" id="carta">
-                <div class="frente">
-                    <h2>Clique para abrir sua carta especial</h2>
-                </div>
-                <div class="verso">
-                    <h2>Feliz Aniversário, Dasha!</h2>
-                    <p>Querida Professora Dasha,</p>
-                    <p>Neste dia tão especial, quero expressar minha profunda gratidão por toda a paixão e dedicação que você coloca em ensinar música.</p>
-                    <p>Seu talento para transformar notas em emoções e sua paciência em guiar cada aluno são verdadeiramente inspiradores.</p>
-                    <p>Que este novo ano de vida traga ainda mais harmonia, alegrias melodiosas e conquistas extraordinárias!</p>
-                    <p>Com todo carinho e admiração,</p>
-                    <p>Seu aluno(a) dedicado(a)</p>
-                </div>
-            </div>
-        </div>
+    
+    <div id="partitura-container"></div>
+    
+    <div id="loading">Carregando piano virtual...</div>
+    
+    <div id="error-message">
+        Ocorreu um erro ao carregar os recursos. Por favor, recarregue a página.
+        <button onclick="window.location.reload()" style="margin-top: 10px;">Recarregar</button>
     </div>
-
-    <footer>
-        <p>Feito com ❤️ para celebrar seu dia especial</p>
-    </footer>
-
+    
+    <button id="btnTocar" disabled>Tocar Parabéns</button>
+    
     <script>
         // Variáveis globais
         let audioContext;
         let instrument;
         let osmd;
-        let partituraCarregada = false;
-        let musicXmlContent = `<?xml version="1.0" encoding="UTF-8"?>
-        <!DOCTYPE score-partwise PUBLIC "-//Recordare//DTD MusicXML 3.1 Partwise//EN" "http://www.musicxml.org/dtds/partwise.dtd">
-        <score-partwise version="3.1">
-            <part-list>
-                <score-part id="P1">
-                    <part-name>Piano</part-name>
-                </score-part>
-            </part-list>
-            <part id="P1">
-                <!-- Happy Birthday simplificado -->
-                <measure number="1">
-                    <attributes>
-                        <divisions>24</divisions>
-                        <key>
-                            <fifths>0</fifths>
-                        </key>
-                        <time>
-                            <beats>3</beats>
-                            <beat-type>4</beat-type>
-                        </time>
-                        <clef>
-                            <sign>G</sign>
-                            <line>2</line>
-                        </clef>
-                    </attributes>
-                    <note>
-                        <pitch>
-                            <step>G</step>
-                            <octave>4</octave>
-                        </pitch>
-                        <duration>12</duration>
-                        <type>eighth</type>
-                    </note>
-                    <note>
-                        <pitch>
-                            <step>G</step>
-                            <octave>4</octave>
-                        </pitch>
-                        <duration>12</duration>
-                        <type>eighth</type>
-                    </note>
-                    <note>
-                        <pitch>
-                            <step>A</step>
-                            <octave>4</octave>
-                        </pitch>
-                        <duration>24</duration>
-                        <type>quarter</type>
-                    </note>
-                </measure>
-                <measure number="2">
-                    <note>
-                        <pitch>
-                            <step>G</step>
-                            <octave>4</octave>
-                        </pitch>
-                        <duration>24</duration>
-                        <type>quarter</type>
-                    </note>
-                    <note>
-                        <pitch>
-                            <step>C</step>
-                            <octave>5</octave>
-                        </pitch>
-                        <duration>24</duration>
-                        <type>quarter</type>
-                    </note>
-                </measure>
-                <measure number="3">
-                    <note>
-                        <pitch>
-                            <step>B</step>
-                            <octave>4</octave>
-                        </pitch>
-                        <duration>48</duration>
-                        <type>half</type>
-                    </note>
-                </measure>
-                <!-- Continuação da música... -->
-            </part>
-        </score-partwise>`;
-
+        
         // Inicialização quando a página carrega
         document.addEventListener('DOMContentLoaded', async () => {
-            // Mostrar loading
-            document.getElementById('loading').style.display = 'block';
-            const progressBar = document.getElementById('progress');
-            
             try {
-                // Inicializar AudioContext (com tratamento para autoplay)
-                audioContext = new StandardizedAudioContext();
+                // 1. Inicializar AudioContext
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
                 
                 // Solução para bloqueio de autoplay
                 document.body.addEventListener('click', () => {
@@ -383,132 +139,118 @@
                         audioContext.resume();
                     }
                 }, { once: true });
-
-                // Atualizar progresso
-                progressBar.style.width = '20%';
                 
-                // Carregar o instrumento de piano (SoundFont)
+                // 2. Carregar instrumento de piano
                 instrument = await Soundfont.instrument(audioContext, 'acoustic_grand_piano', {
                     soundfont: 'MusyngKite',
                     onprogress: (state, progress) => {
-                        const percent = 20 + (progress * 60);
-                        progressBar.style.width = `${percent}%`;
+                        document.getElementById('loading').textContent = 
+                            `Carregando piano... ${Math.round(progress * 100)}%`;
                     }
                 });
                 
-                // Configurar OpenSheetMusicDisplay
-                progressBar.style.width = '85%';
+                // 3. Configurar visualizador de partitura
                 osmd = new opensheetmusicdisplay.OpenSheetMusicDisplay("partitura-container", {
                     backend: "svg",
                     drawTitle: true,
-                    drawingParameters: "compacttight",
-                    autoResize: true
+                    drawingParameters: "compacttight"
                 });
-
-                // Carregar a partitura
+                
+                // 4. Carregar partitura de exemplo (Happy Birthday)
                 await carregarPartitura();
                 
-                progressBar.style.width = '100%';
-                setTimeout(() => {
-                    document.getElementById('loading').style.display = 'none';
-                    document.getElementById('btnIniciar').disabled = false;
-                    document.getElementById('btnIniciar').textContent = "Tocar Parabéns!";
-                }, 500);
+                // 5. Ativar botão
+                document.getElementById('btnTocar').disabled = false;
+                document.getElementById('loading').style.display = 'none';
                 
             } catch (error) {
                 console.error("Erro ao carregar recursos:", error);
-                document.getElementById('loading').innerHTML = `
-                    <p style="color: #ff6b6b;">Ocorreu um erro. Por favor, recarregue a página.</p>
-                    <button onclick="window.location.reload()" style="
-                        padding: 10px 20px;
-                        background: #ff6b6b;
-                        color: white;
-                        border: none;
-                        border-radius: 5px;
-                        margin-top: 20px;
-                        cursor: pointer;
-                    ">Recarregar</button>
-                `;
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('error-message').style.display = 'block';
             }
         });
-
-        // Função para carregar a partitura
+        
+        // Função para carregar partitura de exemplo
         async function carregarPartitura() {
-            try {
-                // Você pode substituir por um fetch para seu arquivo MusicXML
-                // const response = await fetch('parabens.musicxml');
-                // const musicXml = await response.text();
-                
-                await osmd.load(musicXmlContent);
-                await osmd.render();
-                partituraCarregada = true;
-                
-                // Ajustar zoom para melhor visualização
-                osmd.zoom = 0.8;
-                osmd.update();
-                
-            } catch (error) {
-                console.error("Erro ao carregar partitura:", error);
-                throw error;
-            }
-        }
-
-        // Botão Iniciar - tocar partitura
-        document.getElementById('btnIniciar').addEventListener('click', () => {
-            if (!partituraCarregada) {
-                alert("A partitura ainda não foi carregada. Por favor, aguarde.");
-                return;
-            }
+            const musicXml = `<?xml version="1.0" encoding="UTF-8"?>
+            <!DOCTYPE score-partwise PUBLIC "-//Recordare//DTD MusicXML 3.1 Partwise//EN" "http://www.musicxml.org/dtds/partwise.dtd">
+            <score-partwise version="3.1">
+                <part-list>
+                    <score-part id="P1">
+                        <part-name>Piano</part-name>
+                    </score-part>
+                </part-list>
+                <part id="P1">
+                    <!-- Happy Birthday simplificado -->
+                    <measure number="1">
+                        <attributes>
+                            <divisions>24</divisions>
+                            <key><fifths>0</fifths></key>
+                            <time><beats>3</beats><beat-type>4</beat-type></time>
+                            <clef><sign>G</sign><line>2</line></clef>
+                        </attributes>
+                        <note><pitch><step>G</step><octave>4</octave></pitch><duration>12</duration><type>eighth</type></note>
+                        <note><pitch><step>G</step><octave>4</octave></pitch><duration>12</duration><type>eighth</type></note>
+                        <note><pitch><step>A</step><octave>4</octave></pitch><duration>24</duration><type>quarter</type></note>
+                    </measure>
+                    <measure number="2">
+                        <note><pitch><step>G</step><octave>4</octave></pitch><duration>24</duration><type>quarter</type></note>
+                        <note><pitch><step>C</step><octave>5</octave></pitch><duration>24</duration><type>quarter</type></note>
+                    </measure>
+                    <measure number="3">
+                        <note><pitch><step>B</step><octave>4</octave></pitch><duration>48</duration><type>half</type></note>
+                    </measure>
+                </part>
+            </score-partwise>`;
             
-            // Desativar botão enquanto toca
-            const btn = document.getElementById('btnIniciar');
+            await osmd.load(musicXml);
+            await osmd.render();
+            osmd.zoom = 0.7;
+            osmd.update();
+        }
+        
+        // Botão para tocar música
+        document.getElementById('btnTocar').addEventListener('click', () => {
+            tocarMusica();
+            mostrarMensagem();
+        });
+        
+        // Função para tocar a música
+        function tocarMusica() {
+            const btn = document.getElementById('btnTocar');
             btn.disabled = true;
             btn.textContent = "Tocando...";
             
-            // Tocar a partitura
-            tocarPartitura();
-            
-            // Mostrar mensagem de aniversário após 2 segundos
-            setTimeout(mostrarMensagemAniversario, 2000);
-            
-            // Criar confetes
-            criarConfetes();
-        });
-
-        // Função para tocar a partitura
-        function tocarPartitura() {
-            // Obter todas as notas da partitura
+            // Obter notas da partitura
             const notes = osmd.sheet.sourceMeasures[0].verticalSourceStaffEntryContainers
                 .flatMap(container => container.sourceStaffEntries)
                 .flatMap(entry => entry.notes)
-                .filter(note => !!note.pitch); // Filtrar apenas notas com pitch
+                .filter(note => !!note.pitch);
             
-            // Tempo da música (BPM)
-            const tempo = 100; // Ajuste conforme necessário
-            const segundosPorPulso = 60 / tempo;
+            // Configuração do tempo
+            const bpm = 100;
+            const segundosPorPulso = 60 / bpm;
             
-            // Tocar cada nota no tempo correto
+            // Tocar cada nota
             notes.forEach((note, index) => {
-                const startTime = audioContext.currentTime + (index * segundosPorPulso);
                 const nota = note.pitch.step + note.pitch.octave;
+                const startTime = audioContext.currentTime + (index * segundosPorPulso);
                 
-                // Tocar a nota
                 instrument.play(nota, startTime, {
                     duration: note.length.value * segundosPorPulso,
                     gain: 0.3
                 });
             });
             
-            // Reativar o botão quando terminar
-            const duracaoTotal = notes.length * segundosPorPulso;
+            // Reativar botão após tocar
             setTimeout(() => {
-                const btn = document.getElementById('btnIniciar');
                 btn.disabled = false;
                 btn.textContent = "Tocar Novamente";
-            }, duracaoTotal * 1000);
+            }, notes.length * segundosPorPulso * 1000);
         }
-
-        function mostrarMensagemAniversario() {
+        
+        // Mostrar mensagem de aniversário
+        function mostrarMensagem() {
             const mensagem = document.createElement('div');
             mensagem.className = 'mensagem-aniversario';
             mensagem.textContent = 'Feliz Aniversário, Dasha!';
@@ -518,56 +260,6 @@
                 mensagem.remove();
             }, 4000);
         }
-
-        function criarConfetes() {
-            const cores = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#ffbe0b', '#fb5607', '#8338ec'];
-            
-            for (let i = 0; i < 150; i++) {
-                const confete = document.createElement('div');
-                confete.className = 'confete';
-                confete.style.left = Math.random() * 100 + 'vw';
-                confete.style.top = -10 + 'px';
-                confete.style.backgroundColor = cores[Math.floor(Math.random() * cores.length)];
-                confete.style.transform = `rotate(${Math.random() * 360}deg)`;
-                
-                // Tamanho e forma aleatórios
-                const size = Math.random() * 12 + 6;
-                confete.style.width = size + 'px';
-                confete.style.height = size + 'px';
-                
-                if (Math.random() > 0.5) {
-                    confete.style.borderRadius = '50%';
-                }
-                
-                // Atraso aleatório para efeito mais natural
-                confete.style.animationDelay = Math.random() * 3 + 's';
-                
-                document.body.appendChild(confete);
-                
-                // Remover após animação
-                setTimeout(() => {
-                    confete.remove();
-                }, 4000);
-            }
-        }
-        
-        // Interação com a carta
-        document.getElementById('carta').addEventListener('click', () => {
-            document.getElementById('carta').classList.toggle('aberta');
-        });
-        
-        // Para dispositivos touch
-        document.getElementById('carta').addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            document.getElementById('carta').classList.toggle('aberta');
-        });
-
-        // Redimensionar partitura quando a janela muda de tamanho
-        window.addEventListener('resize', () => {
-            if (osmd) {
-                osmd.update();
-            }
-        });
     </script>
 </body>
 </html>
