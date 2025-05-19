@@ -1,0 +1,175 @@
+/* Reset e configurações básicas */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #fff5f7;
+    color: #333;
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Seção do Piano */
+.piano-section {
+    text-align: center;
+    padding: 40px 20px;
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    margin-bottom: 40px;
+    position: relative;
+}
+
+#piano {
+    margin: 30px auto;
+    display: inline-block;
+}
+
+#sheetMusic {
+    margin: 20px auto;
+    width: 100%;
+    max-width: 600px;
+    overflow-x: auto;
+}
+
+.start-button {
+    background: linear-gradient(45deg, #e91e63, #ff5722);
+    color: white;
+    border: none;
+    padding: 15px 40px;
+    font-size: 1.2em;
+    border-radius: 50px;
+    cursor: pointer;
+    margin: 30px 0;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(233, 30, 99, 0.4);
+}
+
+.start-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(233, 30, 99, 0.6);
+}
+
+.start-button:active {
+    transform: translateY(1px);
+}
+
+#birthdayMessage {
+    font-family: 'Dancing Script', cursive;
+    font-size: 4em;
+    color: #e91e63;
+    margin: 20px 0;
+    opacity: 0;
+    position: absolute;
+    width: 100%;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 100;
+    pointer-events: none;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Seção da Carta */
+.letter-section {
+    display: flex;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+.letter-envelope {
+    width: 300px;
+    height: 200px;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.5s ease;
+}
+
+.envelope-front {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #e91e63;
+    border-radius: 10px;
+    z-index: 2;
+    transition: all 0.5s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 1.5em;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.envelope-front::before {
+    content: "Clique para abrir";
+}
+
+.letter {
+    position: absolute;
+    width: 95%;
+    height: 95%;
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    z-index: 1;
+    transition: all 0.5s ease;
+    transform: translateY(0);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    opacity: 0;
+}
+
+.letter-content {
+    overflow-y: auto;
+    max-height: 100%;
+}
+
+/* Animação quando a carta é aberta */
+.letter-envelope.open .envelope-front {
+    transform: translateY(-50%) rotateX(180deg);
+    opacity: 0;
+}
+
+.letter-envelope.open .letter {
+    transform: translateY(-50%);
+    opacity: 1;
+    z-index: 3;
+}
+
+/* Animações */
+@keyframes fadeInOut {
+    0% { opacity: 0; transform: scale(0.5) translateY(-50%); }
+    20% { opacity: 1; transform: scale(1.2) translateY(-50%); }
+    80% { opacity: 1; transform: scale(1.2) translateY(-50%); }
+    100% { opacity: 0; transform: scale(0.5) translateY(-50%); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    #birthdayMessage {
+        font-size: 2.5em;
+    }
+    
+    .letter-envelope {
+        width: 250px;
+        height: 180px;
+    }
+}

@@ -1,380 +1,40 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Feliz Aniversário, Dasha!</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f5f5f5;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            color: #333;
-        }
-
-        header {
-            text-align: center;
-            padding: 20px;
-            width: 100%;
-        }
-
-        h1 {
-            color: #8a2be2;
-            font-size: 2.5em;
-            margin-bottom: 20px;
-        }
-
-        .piano-container {
-            margin: 30px 0;
-            position: relative;
-        }
-
-        .partitura {
-            width: 80%;
-            max-width: 600px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        }
-
-        .piano {
-            display: flex;
-            position: relative;
-            height: 200px;
-            margin-top: -40px;
-        }
-
-        .tecla-branca {
-            width: 50px;
-            height: 200px;
-            background-color: white;
-            border: 1px solid #ccc;
-            border-radius: 0 0 5px 5px;
-            cursor: pointer;
-            z-index: 1;
-            display: flex;
-            justify-content: center;
-            align-items: flex-end;
-            padding-bottom: 10px;
-            font-weight: bold;
-            user-select: none;
-        }
-
-        .tecla-branca.active {
-            background-color: #e0e0e0;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.3);
-        }
-
-        .tecla-preta {
-            width: 30px;
-            height: 120px;
-            background-color: black;
-            border-radius: 0 0 5px 5px;
-            position: absolute;
-            z-index: 2;
-            cursor: pointer;
-        }
-
-        .tecla-preta.active {
-            background-color: #333;
-            box-shadow: inset 0 0 10px rgba(255,255,255,0.2);
-        }
-
-        .btn-iniciar {
-            padding: 12px 25px;
-            background-color: #8a2be2;
-            color: white;
-            border: none;
-            border-radius: 50px;
-            font-size: 1.2em;
-            cursor: pointer;
-            margin: 20px 0;
-            transition: all 0.3s;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        }
-
-        .btn-iniciar:hover {
-            background-color: #7b1fa2;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.3);
-        }
-
-        .mensagem-aniversario {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 3em;
-            color: #ff4081;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-            opacity: 0;
-            z-index: 100;
-            animation: none;
-        }
-
-        .confete {
-            position: fixed;
-            width: 10px;
-            height: 10px;
-            background-color: #f00;
-            opacity: 0;
-            z-index: 99;
-        }
-
-        .carta-container {
-            margin: 50px 0;
-            width: 80%;
-            max-width: 500px;
-            perspective: 1000px;
-        }
-
-        .carta {
-            width: 100%;
-            height: 300px;
-            position: relative;
-            transform-style: preserve-3d;
-            transition: transform 1s;
-            cursor: pointer;
-        }
-
-        .carta.fechada {
-            background: url('https://example.com/carta-fechada.jpg') center/cover;
-            border-radius: 10px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        }
-
-        .carta.aberta {
-            transform: rotateY(180deg);
-            background-color: #fff9e6;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-        }
-
-        .carta-conteudo {
-            display: none;
-            font-size: 1.2em;
-            line-height: 1.6;
-        }
-
-        .carta.aberta .carta-conteudo {
-            display: block;
-        }
-
-        @keyframes aparecer {
-            0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
-            50% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
-            100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-        }
-
-        @keyframes desaparecer {
-            0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-            100% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
-        }
-
-        footer {
-            margin-top: 50px;
-            padding: 20px;
-            text-align: center;
-            color: #666;
-        }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/main.css">
 </head>
 <body>
-    <header>
-        <h1>Para a Professora Dasha</h1>
-        <img src="partitura.png" alt="Partitura Musical" class="partitura" id="partitura">
-    </header>
-
-    <div class="piano-container">
-        <div class="piano" id="piano">
-            <!-- Teclas do piano serão adicionadas via JavaScript -->
+    <div class="container">
+        <div class="piano-section">
+            <div id="piano"></div>
+            <div id="sheetMusic"></div>
+            <button id="startButton" class="start-button">Iniciar Surpresa</button>
+            <div id="birthdayMessage">Feliz Aniversário, Dasha!</div>
         </div>
-    </div>
-
-    <button class="btn-iniciar" id="btnIniciar">Iniciar Música Especial</button>
-
-    <div class="mensagem-aniversario" id="mensagemAniversario">Feliz Aniversário, Dasha!</div>
-
-    <div class="carta-container">
-        <div class="carta fechada" id="carta">
-            <div class="carta-conteudo">
-                <h2>Querida Dasha,</h2>
-                <p>Neste dia tão especial, queremos te agradecer por toda a música e alegria que você traz para nossas vidas.</p>
-                <p>Seu talento, paciência e dedicação inspiram a todos que têm o privilégio de te conhecer.</p>
-                <p>Que este ano traga ainda mais harmonia, felicidade e belas melodias para sua vida!</p>
-                <p>Com carinho,</p>
-                <p><strong>Seus alunos e amigos</strong></p>
+        
+        <div class="letter-section">
+            <div class="letter-envelope" id="letterEnvelope">
+                <div class="envelope-front"></div>
+                <div class="letter" id="letter">
+                    <div class="letter-content" id="letterContent">
+                        <!-- Conteúdo será preenchido via JS -->
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <footer>
-        <p>Feito com ❤️ para o aniversário da Professora Dasha</p>
-    </footer>
-
-    <script>
-        // Configuração do Piano
-        const piano = document.getElementById('piano');
-        const btnIniciar = document.getElementById('btnIniciar');
-        const mensagemAniversario = document.getElementById('mensagemAniversario');
-        const carta = document.getElementById('carta');
-
-        // Notas do piano (uma oitava)
-        const notas = [
-            { tecla: 'C', tipo: 'branca', posicao: 0, audio: new Audio('notas/c4.mp3') },
-            { tecla: 'C#', tipo: 'preta', posicao: 35, audio: new Audio('notas/c4s.mp3') },
-            { tecla: 'D', tipo: 'branca', posicao: 50, audio: new Audio('notas/d4.mp3') },
-            { tecla: 'D#', tipo: 'preta', posicao: 85, audio: new Audio('notas/d4s.mp3') },
-            { tecla: 'E', tipo: 'branca', posicao: 100, audio: new Audio('notas/e4.mp3') },
-            { tecla: 'F', tipo: 'branca', posicao: 150, audio: new Audio('notas/f4.mp3') },
-            { tecla: 'F#', tipo: 'preta', posicao: 185, audio: new Audio('notas/f4s.mp3') },
-            { tecla: 'G', tipo: 'branca', posicao: 200, audio: new Audio('notas/g4.mp3') },
-            { tecla: 'G#', tipo: 'preta', posicao: 235, audio: new Audio('notas/g4s.mp3') },
-            { tecla: 'A', tipo: 'branca', posicao: 250, audio: new Audio('notas/a4.mp3') },
-            { tecla: 'A#', tipo: 'preta', posicao: 285, audio: new Audio('notas/a4s.mp3') },
-            { tecla: 'B', tipo: 'branca', posicao: 300, audio: new Audio('notas/b4.mp3') }
-        ];
-
-        // Criar teclas do piano
-        notas.forEach(nota => {
-            const tecla = document.createElement('div');
-            tecla.className = `tecla-${nota.tipo}`;
-            tecla.textContent = nota.tipo === 'branca' ? nota.tecla : '';
-            
-            if (nota.tipo === 'preta') {
-                tecla.style.left = `${nota.posicao}px`;
-            }
-            
-            tecla.addEventListener('mousedown', () => tocarNota(nota, tecla));
-            tecla.addEventListener('mouseup', () => pararNota(tecla));
-            tecla.addEventListener('mouseleave', () => pararNota(tecla));
-            tecla.addEventListener('touchstart', (e) => {
-                e.preventDefault();
-                tocarNota(nota, tecla);
-            });
-            tecla.addEventListener('touchend', () => pararNota(tecla));
-            
-            piano.appendChild(tecla);
-        });
-
-        function tocarNota(nota, tecla) {
-            tecla.classList.add('active');
-            nota.audio.currentTime = 0;
-            nota.audio.play();
-        }
-
-        function pararNota(tecla) {
-            tecla.classList.remove('active');
-        }
-
-        // Música especial (substitua pela sua partitura)
-        const musicaEspecial = [
-            { nota: 'C', duracao: 500 },
-            { nota: 'E', duracao: 500 },
-            { nota: 'G', duracao: 500 },
-            { nota: 'C', duracao: 500, octave: 5 },
-            { nota: 'E', duracao: 500 },
-            { nota: 'G', duracao: 500 },
-            { nota: 'C', duracao: 1000, octave: 5 }
-        ];
-
-        // Função para tocar música automática
-        function tocarMusica() {
-            btnIniciar.disabled = true;
-            let tempo = 0;
-            
-            musicaEspecial.forEach((item, index) => {
-                setTimeout(() => {
-                    const notaObj = notas.find(n => n.tecla === item.nota);
-                    if (notaObj) {
-                        const tecla = document.querySelector(`.tecla-${notaObj.tipo}[style*="left: ${notaObj.posicao}px"]`) || 
-                                       document.querySelector(`.tecla-${notaObj.tipo}:nth-child(${notas.findIndex(n => n.tecla === item.nota) + 1})`);
-                        tocarNota(notaObj, tecla);
-                        setTimeout(() => pararNota(tecla), item.duracao - 50);
-                    }
-                    
-                    // Mostrar mensagem no final da música
-                    if (index === musicaEspecial.length - 1) {
-                        mostrarMensagemAniversario();
-                    }
-                }, tempo);
-                
-                tempo += item.duracao;
-            });
-        }
-
-        // Mostrar mensagem de aniversário com confetes
-        function mostrarMensagemAniversario() {
-            mensagemAniversario.style.animation = 'aparecer 0.5s forwards';
-            
-            // Criar confetes
-            criarConfetes();
-            
-            // Esconder mensagem após 4 segundos
-            setTimeout(() => {
-                mensagemAniversario.style.animation = 'desaparecer 0.5s forwards';
-            }, 4000);
-            
-            // Reativar botão após a música terminar
-            setTimeout(() => {
-                btnIniciar.disabled = false;
-            }, musicaEspecial.reduce((acc, item) => acc + item.duracao, 0));
-        }
-
-        // Criar efeito de confete
-        function criarConfetes() {
-            const colors = ['#f00', '#0f0', '#00f', '#ff0', '#f0f', '#0ff'];
-            
-            for (let i = 0; i < 100; i++) {
-                const confete = document.createElement('div');
-                confete.className = 'confete';
-                confete.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                confete.style.left = `${Math.random() * 100}vw`;
-                confete.style.top = '-10px';
-                confete.style.transform = `rotate(${Math.random() * 360}deg)`;
-                
-                document.body.appendChild(confete);
-                
-                // Animação do confete
-                setTimeout(() => {
-                    confete.style.opacity = '1';
-                    confete.style.top = `${Math.random() * 100}vh`;
-                    confete.style.left = `${Math.random() * 100}vw`;
-                    confete.style.transition = `all ${Math.random() * 3 + 2}s linear`;
-                    
-                    // Remover confete após animação
-                    setTimeout(() => {
-                        confete.remove();
-                    }, 5000);
-                }, Math.random() * 1000);
-            }
-        }
-
-        // Evento do botão iniciar
-        btnIniciar.addEventListener('click', tocarMusica);
-
-        // Evento da carta
-        carta.addEventListener('click', () => {
-            carta.classList.remove('fechada');
-            carta.classList.add('aberta');
-        });
-
-        // Para dispositivos móveis
-        carta.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            carta.classList.remove('fechada');
-            carta.classList.add('aberta');
-        });
-    </script>
+    <!-- Bibliotecas externas -->
+    <script src="https://cdn.jsdelivr.net/npm/abcjs@6.0.0/dist/abcjs-basic.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tonejs/piano@0.1.2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tone@14.7.77/build/Tone.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
+    
+    <!-- Nosso script principal -->
+    <script src="scripts/main.js"></script>
 </body>
 </html>
