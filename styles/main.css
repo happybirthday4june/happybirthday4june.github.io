@@ -35,13 +35,6 @@ body {
     display: inline-block;
 }
 
-#sheetMusic {
-    margin: 20px auto;
-    width: 100%;
-    max-width: 600px;
-    overflow-x: auto;
-}
-
 .start-button {
     background: linear-gradient(45deg, #e91e63, #ff5722);
     color: white;
@@ -78,6 +71,32 @@ body {
     z-index: 100;
     pointer-events: none;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Estilos para a partitura */
+.sheet-music-container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    margin: 30px auto;
+    max-width: 800px;
+    text-align: center;
+}
+
+#sheetMusic {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.sheet-music-caption {
+    font-style: italic;
+    color: #666;
+    font-size: 0.9em;
+    margin-top: 10px;
 }
 
 /* Seção da Carta */
@@ -125,7 +144,7 @@ body {
     z-index: 1;
     transition: all 0.5s ease;
     transform: translateY(0);
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -172,33 +191,19 @@ body {
         width: 250px;
         height: 180px;
     }
-}
-
-.sheet-music-container {
-    background-color: #fff;
-    padding: 15px;
-    border-radius: 10px;
-    margin: 20px auto;
-    max-width: 600px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-}
-
-@media (max-width: 600px) {
+    
     .sheet-music-container {
         padding: 10px;
-        overflow-x: auto;
-    }
-    
-    #sheetMusic svg {
-        transform: scale(0.8);
-        transform-origin: 0 0;
     }
 }
-.sheet-music-img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    margin: 20px 0;
-    max-height: 300px;
+
+@media (max-width: 480px) {
+    .piano-section {
+        padding: 20px 10px;
+    }
+    
+    .start-button {
+        padding: 12px 30px;
+        font-size: 1em;
+    }
 }

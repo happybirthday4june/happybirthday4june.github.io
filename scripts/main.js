@@ -18,36 +18,38 @@ document.addEventListener('DOMContentLoaded', function() {
           G2 G g | e2 c B | A2 F F | E2 c d :|
     `;
     
-    // Conteúdo da carta (personalize como desejar)
+    // Conteúdo da carta
     const letterText = `
         <h2>Querida Dasha,</h2>
-        <p>Hoje é um dia especial para celebrar você e toda a luz que traz ao mundo através da música!</p>
+        <p>Neste dia especial, quero celebrar você e toda a alegria que traz ao mundo através da música.</p>
         
-        <p>Em cada nota que toca, em cada acorde que ensina, você demonstra não apenas 
-        seu talento excepcional, mas também sua generosidade em compartilhar esse dom.</p>
+        <p>Sua paixão pelo piano e dedicação ao ensino inspiram todos ao seu redor.</p>
         
         <p>Que este novo ano de vida seja repleto de:</p>
         <ul>
             <li>Harmonias perfeitas</li>
             <li>Melodias inesquecíveis</li>
-            <li>Muitas alegrias e conquistas</li>
+            <li>Momentos de muita alegria</li>
         </ul>
         
-        <p>Que continue inspirando seus alunos e todos ao seu redor com sua paixão pelo piano e pela música.</p>
+        <p>Continue compartilhando seu dom com o mundo!</p>
         
-        <p>Com todo carinho e admiração,</p>
-        <p class="signature">[Seu Nome]</p>
+        <p class="signature">Com todo carinho,<br>[Seu Nome]</p>
         
         <style>
             .signature {
-                font-style: italic;
                 margin-top: 30px;
-                text-align: right;
                 font-family: 'Dancing Script', cursive;
-                font-size: 1.3em;
+                font-size: 1.4em;
+                text-align: right;
+                color: #e91e63;
             }
             ul {
                 margin: 15px 0 15px 30px;
+            }
+            h2 {
+                color: #e91e63;
+                margin-bottom: 15px;
             }
         </style>
     `;
@@ -55,8 +57,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Inicializa a carta
     letterContent.innerHTML = letterText;
     
-    // Configura o piano e a partitura
-    setupPianoAndSheetMusic(happyBirthdayABC);
+    // Configura o piano
+    setupPiano();
     
     // Evento do botão Iniciar
     startButton.addEventListener('click', playBirthdaySurprise);
@@ -65,134 +67,90 @@ document.addEventListener('DOMContentLoaded', function() {
     letterEnvelope.addEventListener('click', toggleLetter);
 });
 
-// Configura o piano e exibe a partitura
-function setupPianoAndSheetMusic(abcNotation) {
-    // Renderiza a partitura
-    ABCJS.renderAbc("sheetMusic", abcNotation, {
-        responsive: "resize",
-        staffwidth: 500,
-        paddingtop: 20,
-        paddingbottom: 20,
-        paddingright: 20,
-        paddingleft: 20
-    });
+// Configura o piano virtual
+async function setupPiano() {
+    await Tone.start();
     
-    // Cria teclas de piano interativas
-    const pianoContainer = document.getElementById('piano');
-    const notes = [
-        { note: 'C', display: 'C', type: 'white' },
-        { note: 'D', display: 'D', type: 'white' },
-        { note: 'E', display: 'E', type: 'white' },
-        { note: 'F', display: 'F', type: 'white' },
-        { note: 'G', display: 'G', type: 'white' },
-        { note: 'A', display: 'A', type: 'white' },
-        { note: 'B', display: 'B', type: 'white' },
-        { note: 'C5', display: 'C²', type: 'white' }
-    ];
-    
-    pianoContainer.innerHTML = '';
-    pianoContainer.style.display = 'flex';
-    pianoContainer.style.justifyContent = 'center';
-    pianoContainer.style.position = 'relative';
-    
-    // Cria teclas brancas
-    notes.forEach(key => {
-        if (key.type === 'white') {
-            const keyElement = createPianoKey(key, pianoContainer);
-            pianoContainer.appendChild(keyElement);
-        }
-    });
-    
-    // Cria teclas pretas (para um piano mais completo)
-    const blackKeys = [
-        { note: 'C#', display: 'C#', type: 'black', position: 0.7 },
-        { note: 'D#', display: 'D#', type: 'black', position: 1.7 },
-        { note: 'F#', display: 'F#', type: 'black', position: 3.7 },
-        { note: 'G#', display: 'G#', type: 'black', position: 4.7 },
-        { note: 'A#', display: 'A#', type: 'black', position: 5.7 }
-    ];
-    
-    blackKeys.forEach(key => {
-        const keyElement = createPianoKey(key, pianoContainer);
-        keyElement.style.position = 'absolute';
-        keyElement.style.left = `${key.position * 50}px`;
-        keyElement.style.zIndex = '2';
-        pianoContainer.appendChild(keyElement);
-    });
-}
-
-// Cria uma tecla de piano
-function createPianoKey(key, container) {
-    const keyElement = document.createElement('div');
-    keyElement.className = `piano-key ${key.type}-key`;
-    keyElement.textContent = key.display;
-    keyElement.dataset.note = key.note;
-    
-    // Estilo base
-    keyElement.style.width = key.type === 'black' ? '30px' : '50px';
-    keyElement.style.height = key.type === 'black' ? '120px' : '200px';
-    keyElement.style.backgroundColor = key.type === 'black' ? '#000' : '#fff';
-    keyElement.style.color = key.type === 'black' ? '#fff' : '#000';
-    keyElement.style.border = '1px solid #000';
-    keyElement.style.borderRadius = key.type === 'black' ? '0 0 3px 3px' : '0 0 8px 8px';
-    keyElement.style.display = 'flex';
-    keyElement.style.justifyContent = 'center';
-    keyElement.style.alignItems = 'flex-end';
-    keyElement.style.paddingBottom = '10px';
-    keyElement.style.cursor = 'pointer';
-    keyElement.style.transition = 'all 0.1s';
-    keyElement.style.userSelect = 'none';
-    
-    // Efeitos de interação
-    keyElement.addEventListener('mousedown', () => {
-        playNote(key.note, keyElement);
-        keyElement.style.transform = 'scale(0.95)';
-        keyElement.style.boxShadow = key.type === 'black' 
-            ? 'inset -3px -3px 5px rgba(255,255,255,0.1)' 
-            : 'inset -5px -5px 10px rgba(0,0,0,0.1)';
-    });
-    
-    keyElement.addEventListener('mouseup', () => {
-        keyElement.style.transform = 'scale(1)';
-        keyElement.style.boxShadow = 'none';
-    });
-    
-    keyElement.addEventListener('mouseleave', () => {
-        keyElement.style.transform = 'scale(1)';
-        keyElement.style.boxShadow = 'none';
-    });
-    
-    return keyElement;
-}
-
-// Toca uma nota individual
-function playNote(note, keyElement) {
-    // Destaque visual
-    keyElement.style.backgroundColor = keyElement.classList.contains('black-key') 
-        ? '#333' 
-        : '#f0f0f0';
-    
-    setTimeout(() => {
-        keyElement.style.backgroundColor = keyElement.classList.contains('black-key') 
-            ? '#000' 
-            : '#fff';
-    }, 200);
-    
-    // Toca a nota usando Tone.js
-    const synth = new Tone.Synth({
-        oscillator: {
-            type: "triangle"
-        },
-        envelope: {
-            attack: 0.005,
-            decay: 0.1,
-            sustain: 0.3,
-            release: 0.1
-        }
+    const piano = new Tone.Piano({
+        velocities: 3,
+        release: 0.4
     }).toDestination();
     
-    const now = Tone.now();
-    synth.triggerAttackRelease(note + "4", "8n", now);
+    // Teclas do piano
+    const keys = [
+        { note: 'C4', key: 'a', type: 'white' },
+        { note: 'C#4', key: 'w', type: 'black' },
+        { note: 'D4', key: 's', type: 'white' },
+        { note: 'D#4', key: 'e', type: 'black' },
+        { note: 'E4', key: 'd', type: 'white' },
+        { note: 'F4', key: 'f', type: 'white' },
+        { note: 'F#4', key: 't', type: 'black' },
+        { note: 'G4', key: 'g', type: 'white' },
+        { note: 'G#4', key: 'y', type: 'black' },
+        { note: 'A4', key: 'h', type: 'white' },
+        { note: 'A#4', key: 'u', type: 'black' },
+        { note: 'B4', key: 'j', type: 'white' },
+        { note: 'C5', key: 'k', type: 'white' }
+    ];
+    
+    // Cria teclas visuais
+    const pianoContainer = document.getElementById('piano');
+    pianoContainer.innerHTML = '';
+    pianoContainer.style.display = 'flex';
+    pianoContainer.style.position = 'relative';
+    pianoContainer.style.height = '200px';
+    
+    keys.forEach(key => {
+        const keyElement = document.createElement('div');
+        keyElement.className = `piano-key ${key.type}-key`;
+        keyElement.dataset.note = key.note;
+        
+        if (key.type === 'white') {
+            keyElement.style.width = '50px';
+            keyElement.style.height = '100%';
+            keyElement.style.zIndex = '1';
+        } else {
+            keyElement.style.width = '30px';
+            keyElement.style.height = '60%';
+            keyElement.style.position = 'absolute';
+            keyElement.style.zIndex = '2';
+            keyElement.style.marginLeft = '-15px';
+        }
+        
+        pianoContainer.appendChild(keyElement);
+    });
+    
+    // Mapeia teclas do teclado
+    document.addEventListener('keydown', (e) => {
+        const keyObj = keys.find(k => k.key === e.key);
+        if (keyObj) {
+            piano.triggerAttackRelease(keyObj.note, "8n");
+            highlightKey(keyObj.note);
+        }
+    });
+    
+    // Mapeia clicks do mouse
+    pianoContainer.addEventListener('mousedown', (e) => {
+        if (e.target.classList.contains('piano-key')) {
+            const note = e.target.dataset.note;
+            piano.triggerAttackRelease(note, "8n");
+            highlightKey(note);
+        }
+    });
+}
+
+// Destaca tecla ao ser tocada
+function highlightKey(note) {
+    const key = document.querySelector(`[data-note="${note}"]`);
+    if (!key) return;
+    
+    key.style.transform = 'scale(0.95)';
+    key.style.backgroundColor = key.classList.contains('white-key') ? '#f0f0f0' : '#333';
+    
+    setTimeout(() => {
+        key.style.transform = 'scale(1)';
+        key.style.backgroundColor = key.classList.contains('white-key') ? '#fff' : '#000';
+    }, 200);
 }
 
 // Toca a surpresa de aniversário
@@ -202,37 +160,66 @@ async function playBirthdaySurprise() {
     startButton.textContent = 'Preparando...';
     
     try {
-        // Inicializa o contexto de áudio
-        await Tone.start();
-        
-        // Mostra a mensagem de aniversário
+        // Mostra mensagem
         const birthdayMessage = document.getElementById('birthdayMessage');
         birthdayMessage.style.animation = 'fadeInOut 4s forwards';
         
-        // Dispara confetes
+        // Confetes
         fireConfetti();
         
-        // Toca a música usando ABCJS
-        const visualObj = ABCJS.renderAbc("*", happyBirthdayABC)[0];
-        const synth = new ABCJS.synth.CreateSynth();
+        // Toca a música
+        const synth = new Tone.PolySynth(Tone.Synth).toDestination();
+        synth.volume.value = -8;
         
-        await synth.init({
-            audioContext: Tone.context,
-            visualObj: visualObj,
-        });
+        const notes = [
+            { time: "0:0", note: "G4", duration: "8n" },
+            { time: "0:1", note: "G4", duration: "8n" },
+            { time: "0:2", note: "A4", duration: "4n" },
+            { time: "1:0", note: "G4", duration: "8n" },
+            { time: "1:1", note: "C5", duration: "8n" },
+            { time: "1:2", note: "B4", duration: "4n" },
+            { time: "2:0", note: "G4", duration: "8n" },
+            { time: "2:1", note: "G4", duration: "8n" },
+            { time: "2:2", note: "A4", duration: "4n" },
+            { time: "3:0", note: "G4", duration: "8n" },
+            { time: "3:1", note: "D5", duration: "8n" },
+            { time: "3:2", note: "C5", duration: "4n" },
+            { time: "4:0", note: "G4", duration: "8n" },
+            { time: "4:1", note: "G4", duration: "8n" },
+            { time: "4:2", note: "G5", duration: "4n" },
+            { time: "5:0", note: "E5", duration: "8n" },
+            { time: "5:1", note: "C5", duration: "8n" },
+            { time: "5:2", note: "B4", duration: "4n" },
+            { time: "6:0", note: "A4", duration: "8n" },
+            { time: "6:1", note: "F5", duration: "8n" },
+            { time: "6:2", note: "F5", duration: "4n" },
+            { time: "7:0", note: "E5", duration: "8n" },
+            { time: "7:1", note: "C5", duration: "8n" },
+            { time: "7:2", note: "D5", duration: "4n" },
+            { time: "8:0", note: "C5", duration: "2n" }
+        ];
         
-        await synth.prime();
+        const part = new Tone.Part((time, value) => {
+            synth.triggerAttackRelease(value.note, value.duration, time);
+            highlightKey(value.note);
+        }, notes).start(0);
+        
+        part.loop = false;
+        part.loopEnd = "8:0";
+        
+        Tone.Transport.bpm.value = 120;
+        Tone.Transport.start();
+        
         startButton.textContent = 'Tocando...';
-        await synth.start();
         
-        // Restaura o botão após tocar
+        // Quando terminar
         setTimeout(() => {
             startButton.disabled = false;
             startButton.textContent = 'Tocar Novamente';
-        }, 1000);
+        }, 8000);
         
     } catch (error) {
-        console.error("Erro ao tocar música:", error);
+        console.error("Erro:", error);
         startButton.disabled = false;
         startButton.textContent = 'Tentar Novamente';
     }
@@ -240,27 +227,30 @@ async function playBirthdaySurprise() {
 
 // Efeito de confete
 function fireConfetti() {
-    const count = 200;
-    const defaults = {
-        origin: { y: 0.6 },
+    confetti({
+        particleCount: 150,
         spread: 70,
-        startVelocity: 30
-    };
+        origin: { y: 0.6 },
+        colors: ['#e91e63', '#ffeb3b', '#4caf50', '#2196f3', '#9c27b0']
+    });
     
-    function fire(particleRatio, opts) {
+    setTimeout(() => {
         confetti({
-            ...defaults,
-            ...opts,
-            particleCount: Math.floor(count * particleRatio),
-            colors: ['#e91e63', '#ffeb3b', '#4caf50', '#2196f3', '#9c27b0']
+            particleCount: 100,
+            angle: 60,
+            spread: 70,
+            origin: { x: 0.3, y: 0.7 },
+            colors: ['#e91e63', '#ffeb3b']
         });
-    }
-    
-    fire(0.25, { angle: 60 });
-    fire(0.2, { angle: 120 });
-    fire(0.35, { angle: 90 });
-    fire(0.1, { angle: 45, spread: 100 });
-    fire(0.1, { angle: 135, spread: 100 });
+        
+        confetti({
+            particleCount: 100,
+            angle: 120,
+            spread: 70,
+            origin: { x: 0.7, y: 0.7 },
+            colors: ['#4caf50', '#2196f3']
+        });
+    }, 300);
 }
 
 // Abre/fecha a carta
@@ -268,7 +258,6 @@ function toggleLetter() {
     const letterEnvelope = document.getElementById('letterEnvelope');
     letterEnvelope.classList.toggle('open');
     
-    // Se estiver aberta, adiciona animação ao conteúdo
     if (letterEnvelope.classList.contains('open')) {
         const letterContent = document.getElementById('letterContent');
         letterContent.style.animation = 'none';
