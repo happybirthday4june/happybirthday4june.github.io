@@ -5,41 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Feliz Aniversário, Dasha!</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
-        <div class="piano-section">
-            <!-- Partitura -->
-            <div class="sheet-music-container">
-                <img src="assets/images/image.png" alt="Partitura de Happy Birthday" id="sheetMusic">
-                <div class="sheet-music-caption">© Partitura de Happy Birthday - Tomlar Novarmento</div>
-            </div>
-            
-            <!-- Piano -->
-            <div id="piano"></div>
-            
-            <!-- Controles -->
-            <button id="startButton" class="start-button">Iniciar Surpresa</button>
-            <div id="birthdayMessage">Feliz Aniversário, Dasha!</div>
+        <!-- Partitura reduzida -->
+        <div class="sheet-music">
+            <img src="partitura.jpg" alt="Partitura de Happy Birthday">
         </div>
         
-        <div class="letter-section">
-            <div class="letter-envelope" id="letterEnvelope">
-                <div class="envelope-front"></div>
-                <div class="letter" id="letter">
-                    <div class="letter-content" id="letterContent"></div>
-                </div>
+        <!-- Piano visível -->
+        <div id="piano">
+            <!-- Teclas serão adicionadas pelo JavaScript -->
+        </div>
+        
+        <button id="playBtn">Tocar Música</button>
+        <div id="message">Feliz Aniversário, Dasha!</div>
+        
+        <!-- Carta -->
+        <div class="envelope" id="envelope">
+            <div class="front"></div>
+            <div class="letter">
+                <p>Querida Dasha,</p>
+                <!-- Sua mensagem aqui -->
             </div>
         </div>
     </div>
 
-    <!-- Bibliotecas -->
-    <script src="https://cdn.jsdelivr.net/npm/tone@14.7.77/build/Tone.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
-    
-    <!-- Nossos scripts -->
-    <script src="scripts/piano.js"></script>
-    <script src="scripts/main.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
