@@ -28,7 +28,7 @@ body {
     margin-bottom: 30px;
 }
 
-/* Partitura reduzida */
+/* Partitura */
 .sheet-music-container {
     max-width: 500px;
     margin: 0 auto 20px;
@@ -52,47 +52,53 @@ body {
     margin-top: 5px;
 }
 
-/* Piano visível */
+/* Piano */
 #piano {
     display: flex;
-    justify-content: center;
     position: relative;
-    height: 180px;
+    height: 200px;
     margin: 20px auto;
+    justify-content: center;
 }
 
 .piano-key {
-    position: relative;
-    cursor: pointer;
-    transition: all 0.1s;
     display: flex;
     justify-content: center;
     align-items: flex-end;
-    padding-bottom: 8px;
+    padding-bottom: 10px;
     font-weight: bold;
-    font-size: 0.8em;
+    cursor: pointer;
     user-select: none;
+    transition: all 0.1s;
 }
 
 .white-key {
-    width: 45px;
-    height: 180px;
+    width: 50px;
+    height: 200px;
     background-color: white;
     border: 1px solid #ddd;
     border-radius: 0 0 5px 5px;
     z-index: 1;
+    position: relative;
 }
 
 .black-key {
-    width: 28px;
-    height: 110px;
+    width: 32px;
+    height: 120px;
     background-color: #222;
     color: white;
-    border-radius: 0 0 3px 3px;
     position: absolute;
     top: 0;
     z-index: 2;
+    border-radius: 0 0 3px 3px;
 }
+
+/* Posições das teclas pretas */
+[data-note="C#4"] { left: 35px; }
+[data-note="D#4"] { left: 85px; }
+[data-note="F#4"] { left: 185px; }
+[data-note="G#4"] { left: 235px; }
+[data-note="A#4"] { left: 285px; }
 
 /* Efeito de tecla pressionada */
 .key-active {
@@ -233,13 +239,19 @@ body {
     .white-key {
         width: 40px;
         height: 150px;
-        font-size: 0.7em;
     }
     
     .black-key {
-        width: 24px;
+        width: 26px;
         height: 90px;
     }
+    
+    /* Ajuste posições das teclas pretas para mobile */
+    [data-note="C#4"] { left: 28px; }
+    [data-note="D#4"] { left: 68px; }
+    [data-note="F#4"] { left: 148px; }
+    [data-note="G#4"] { left: 188px; }
+    [data-note="A#4"] { left: 228px; }
     
     #sheetMusic {
         max-height: 120px;

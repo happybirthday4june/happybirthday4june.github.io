@@ -1,13 +1,12 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
+    // Carrega o piano primeiro
+    const piano = await createPiano();
+    
     // Elementos da UI
     const startButton = document.getElementById('startButton');
     const birthdayMessage = document.getElementById('birthdayMessage');
     const letterEnvelope = document.getElementById('letterEnvelope');
     const letterContent = document.getElementById('letterContent');
-    
-    // Configuração do piano
-    let piano;
-    const notesPlaying = new Set();
     
     // Conteúdo da carta
     const letterText = `
@@ -51,126 +50,14 @@ document.addEventListener('DOMContentLoaded', function() {
     // Inicializa a carta
     letterContent.innerHTML = letterText;
     
-    // Configura o piano
-    setupPiano();
-    
     // Evento do botão Iniciar
-    startButton.addEventListener('click', playBirthdaySurprise);
+    startButton.addEventListener('click', () => playBirthdaySurprise(piano));
     
     // Evento da carta
     letterEnvelope.addEventListener('click', toggleLetter);
     
-    // Configura o piano virtual
-    async function setupPiano() {
-        await Tone.start();
-        
-        // Cria teclas visuais
-        const pianoContainer = document.getElementById('piano');
-        pianoContainer.innerHTML = '';
-        
-        // Teclas brancas
-        const whiteKeys = [
-            { note: 'C4', label: 'C' },
-            { note: 'D4', label: 'D' },
-            { note: 'E4', label: 'E' },
-            { note: 'F4', label: 'F' },
-            { note: 'G4', label: 'G' },
-            { note: 'A4', label: 'A' },
-            { note: 'B4', label: 'B' },
-            { note: 'C5', label: 'C' }
-        ];
-        
-        // Teclas pretas
-        const blackKeys = [
-            { note: 'C#4', label: 'C#', pos: 0.7 },
-            { note: 'D#4', label: 'D#', pos: 1.7 },
-            { note: 'F#4', label: 'F#', pos: 3.7 },
-            { note: 'G#4', label: 'G#', pos: 4.7 },
-            { note: 'A#4', label: 'A#', pos: 5.7 }
-        ];
-        
-        // Cria teclas brancas
-        whiteKeys.forEach(key => {
-            const keyElement = document.createElement('div');
-            keyElement.className = 'white-key piano-key';
-            keyElement.dataset.note = key.note;
-            keyElement.textContent = key.label;
-            pianoContainer.appendChild(keyElement);
-        });
-        
-        // Cria teclas pretas
-        blackKeys.forEach(key => {
-            const keyElement = document.createElement('div');
-            keyElement.className = 'black-key piano-key';
-            keyElement.dataset.note = key.note;
-            keyElement.textContent = key.label;
-            keyElement.style.left = `${key.pos * 45}px`;
-            pianoContainer.appendChild(keyElement);
-        });
-        
-        // Inicializa o piano sintetizado
-        piano = new Tone.PolySynth(Tone.Synth, {
-            oscillator: {
-                type: "sine"
-            },
-            envelope: {
-                attack: 0.005,
-                decay: 0.1,
-                sustain: 0.3,
-                release: 0.1
-            }
-        }).toDestination();
-        piano.volume.value = -10;
-        
-        // Eventos de teclado
-        document.addEventListener('keydown', (e) => {
-            const keyMap = {
-                'a': 'C4', 'w': 'C#4', 's': 'D4', 'e': 'D#4', 
-                'd': 'E4', 'f': 'F4', 't': 'F#4', 'g': 'G4', 
-                'y': 'G#4', 'h': 'A4', 'u': 'A#4', 'j': 'B4', 
-                'k': 'C5'
-            };
-            
-            if (keyMap[e.key]) {
-                playNote(keyMap[e.key]);
-            }
-        });
-        
-        // Eventos de mouse
-        pianoContainer.addEventListener('mousedown', (e) => {
-            if (e.target.classList.contains('piano-key')) {
-                playNote(e.target.dataset.note);
-            }
-        });
-    }
-    
-    // Toca uma nota individual
-    function playNote(note) {
-        if (notesPlaying.has(note)) return;
-        
-        notesPlaying.add(note);
-        piano.triggerAttackRelease(note, "8n");
-        highlightKey(note);
-        
-        setTimeout(() => {
-            notesPlaying.delete(note);
-        }, 200);
-    }
-    
-    // Destaca tecla ao ser tocada
-    function highlightKey(note) {
-        const key = document.querySelector(`[data-note="${note}"]`);
-        if (!key) return;
-        
-        key.classList.add('key-active');
-        
-        setTimeout(() => {
-            key.classList.remove('key-active');
-        }, 200);
-    }
-    
     // Toca a surpresa de aniversário
-    async function playBirthdaySurprise() {
+    async function playBirthdaySurprise(piano) {
         startButton.disabled = true;
         startButton.textContent = 'Preparando...';
         
